@@ -1,0 +1,12 @@
+# Global ignores
+node_modules
+.env
+
+# React (client)
+client/node_modules
+client/dist
+client/.env
+
+# Express (server)
+server/node_modules
+server/.env
