@@ -30,9 +30,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   // Fetch sessions (refactored to allow refresh after delete)
   const fetchSessions = async () => {
     try {
-      const res = await fetch("/api/chat/sessions", {
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/chat/sessions`,
+        {
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
       if (res.ok) {
         const data = await res.json();
         setSessions(data);
@@ -50,10 +53,13 @@ const Sidebar: React.FC<SidebarProps> = ({
   const handleDelete = async (id: string) => {
     if (!window.confirm("Delete this chat session?")) return;
     try {
-      const res = await fetch(`/api/chat/sessions/${id}`, {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${getToken()}` },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/chat/sessions/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
       if (res.ok) {
         setSessions((prev) => prev.filter((s) => s._id !== id));
         if (selectedSession === id) setSelectedSession(null);
