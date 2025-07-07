@@ -35,7 +35,9 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     const fetchMessages = async () => {
       try {
         const res = await fetch(
-          `/api/chat/sessions/${selectedSession}/messages`,
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/api/chat/sessions/${selectedSession}/messages`,
           {
             headers: { Authorization: `Bearer ${getToken()}` },
           }
@@ -103,14 +105,17 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
     try {
       // If no session, create one
       if (!sessionId) {
-        const res = await fetch("/api/chat/sessions", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${getToken()}`,
-          },
-          body: JSON.stringify({ title: inputValue.slice(0, 30) }),
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/api/chat/sessions`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${getToken()}`,
+            },
+            body: JSON.stringify({ title: inputValue.slice(0, 30) }),
+          }
+        );
         if (res.ok) {
           const data = await res.json();
           sessionId = data._id;
@@ -120,14 +125,19 @@ const ChatInterface: React.FC<ChatInterfaceProps> = ({
         }
       }
       // Post message to backend
-      const res = await fetch(`/api/chat/sessions/${sessionId}/messages`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${getToken()}`,
-        },
-        body: JSON.stringify({ content: inputValue }),
-      });
+      const res = await fetch(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/api/chat/sessions/${sessionId}/messages`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getToken()}`,
+          },
+          body: JSON.stringify({ content: inputValue }),
+        }
+      );
       if (res.ok) {
         const aiData = await res.json();
         setMessages((prev) => [
